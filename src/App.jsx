@@ -10,7 +10,7 @@ import yukawaPortrait from './assets/yukawa-portrait.png';
 const questions = [
   {
     id: 1,
-    title: "展品一一：面對混沌不明的難題",
+    title: "展品一：面對混沌不明的難題",
     description: "如果你面對一個混沌不明的難題時，你更傾向於哪種探索方式？",
     options: [
       { text: "類型A(實務派)：徹底收集數據，推導邏輯", score: 0.5 },
