@@ -10,8 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "firebase": "^12.13.0",
+    "html2canvas": "^1.4.1",
     "react": "^19.2.5",
-    "react-dom": "^19.2.5"
+    "react-dom": "^19.2.5",
+    "react-webcam": "^7.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
