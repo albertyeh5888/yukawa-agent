@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react';
 import Webcam from 'react-webcam';
 import html2canvas from 'html2canvas';
 import './App.css';
+
+
 import yukawaPortrait from './assets/yukawa-portrait.png';
 
 // 題庫設定：你可以隨時在這裡修改文字或分數
