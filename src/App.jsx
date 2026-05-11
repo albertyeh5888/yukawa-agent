@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import Webcam from 'react-webcam';
 import html2canvas from 'html2canvas';
 import './App.css';
+import yukawaPortrait from './assets/yukawa-portrait.png';
 
 // 題庫設定：你可以隨時在這裡修改文字或分數
 const questions = [
@@ -125,16 +126,25 @@ function App() {
       {currentStep === questions.length && (
         <div className="result-section">
           <div id="photo-area" className="photo-container">
+            {/* 底層：觀眾的濾鏡照片 */}
             <img src={imgSrc} alt="captured" className="user-photo" />
-            {/* 相似度越高，湯川濾鏡的顏色或疊加感越強 */}
-            <div 
-              className="yukawa-overlay" 
-              style={{ opacity: similarity / 100 }}
-            ></div>
-            <div className="result-overlay-text">
-              同步率：{similarity}%
-            </div>
-          </div>
+
+             {/* 頂層：湯川秀樹頭像 (依同步率控制透明度) */}
+            <img 
+              src={yukawaPortrait} 
+              alt="Yukawa Overlay" 
+              className="yukawa-face-blend" 
+              style={{ 
+              // 關鍵邏輯：同步率 80%，透明度就是 0.8
+              opacity: similarity / 100 
+             }} 
+           />
+
+           {/* 裝飾用的掃描線或文字 */}
+           <div className="result-overlay-text">
+            IDENTITY CONFIRMED: {similarity}%
+           </div>
+        </div>
           
           <div className="result-info">
             <h3>身分確認成功</h3>

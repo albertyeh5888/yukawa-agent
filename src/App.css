@@ -26,7 +26,7 @@
 }
 
 /* 這裡可以放湯川秀樹的特徵疊加層 */
-.yukawa-overlay {
+/*.yukawa-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -36,7 +36,56 @@
   mix-blend-mode: overlay;
   pointer-events: none;
 }
+*/
+/* 儲存照片的容器 */
+.photo-container {
+  position: relative; /* 關鍵：讓內部的圖片可以絕對定位 */
+  display: inline-block;
+  overflow: hidden;
+  border: 4px solid #fff;
+  box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+  background-color: #000; /* 防止透明背景穿透 */
+}
 
+/* 觀眾照片 (底層) */
+.user-photo {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  /* 營造古老、理性的基調 */
+  filter: grayscale(100%) sepia(20%) contrast(1.1); 
+}
+
+/* 湯川秀樹頭像 (疊加層) */
+.yukawa-face-blend {
+  position: absolute; /* 關鍵：疊在底層圖片上 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 確保湯川的臉不會變形，會填滿視窗 */
+  
+  /* 關鍵：混合模式。讓兩張臉融合在一起，而不是單純覆蓋 */
+  /* 你可以嘗試 'screen', 'overlay', 或 'multiply' 看看哪種效果最適合你的圖片 */
+  mix-blend-mode: screen; 
+
+  transition: opacity 0.5s ease-in-out; /* 增加一點淡入的動畫感 */
+  pointer-events: none; /* 讓滑鼠可以穿透，不影響按鈕操作 */
+}
+
+/* 結果頁面的裝飾文字 */
+.result-overlay-text {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #00ffcc;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 2px 8px;
+}
 .btn-capture, .btn-save, .btn-retry {
   margin-top: 20px;
   padding: 10px 20px;
