@@ -168,7 +168,7 @@ function App() {
               src={yukawaPortrait} 
               alt="Yukawa Overlay" 
               className="yukawa-face-blend" 
-              style={{ opacity: similarity / 100 }} 
+              style={{ opacity: similarity / 200 }} 
             />
 
             {/* 數位 UI 裝飾 */}
