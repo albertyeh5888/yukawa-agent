@@ -7,8 +7,8 @@ import './App.css';
 import yukawaPortrait from './assets/yukawa-portrait.png';
 import frameGuide from './assets/frame.png'; 
 
-// 題庫設定
 const questions = [
+  // ... 題庫內容保持不變 ...
   {
     id: 1,
     title: "展品一：面對混沌不明的難題",
@@ -49,42 +49,36 @@ const questions = [
 ];
 
 function App() {
-  // --- 狀態管理 ---
   const webcamRef = useRef(null);
   const [imgSrc, setImgSrc] = useState(null);
-  const [currentStep, setCurrentStep] = useState(-1); // -1: 歡迎/拍照, 0~3: 題目, 4: 結果
+  const [currentStep, setCurrentStep] = useState(-1);
   const [totalScore, setTotalScore] = useState(0);
 
-  // --- 鎖定相機硬體參數 ---
   const videoConstraints = {
     width: 1280,
     height: 960,
     facingMode: "user"
   };
 
-  // --- 邏輯功能 ---
-  
-  // 1. 拍照並進入第一題
   const capture = () => {
-    // 獲取當前 Webcam 畫面截圖
-    const imageSrc = webcamRef.current.getScreenshot();
-    setImgSrc(imageSrc);
-    setCurrentStep(0); 
+    if (webcamRef.current) {
+      const imageSrc = webcamRef.current.getScreenshot();
+      setImgSrc(imageSrc);
+      setCurrentStep(0);
+    }
   };
 
-  // 2. 處理答題
   const handleAnswer = (score) => {
     setTotalScore(prev => prev + score);
     setCurrentStep(prev => prev + 1);
   };
 
-  // 3. 儲存圖片
   const downloadImage = async () => {
     const element = document.getElementById('photo-area');
-    // 使用 html2canvas 捕捉包含疊加效果的 div
+    if (!element) return;
     const canvas = await html2canvas(element, {
-      useCORS: true, // 避免圖片跨域問題
-      scale: 2       // 提高下載圖片的解析度
+      useCORS: true,
+      scale: 2
     });
     const dataUrl = canvas.toDataURL('image/png');
     const link = document.createElement('a');
@@ -93,15 +87,12 @@ function App() {
     link.click();
   };
 
-  // 計算相似度
   const similarity = ((totalScore / questions.length) * 100).toFixed(0);
 
-  // --- 畫面渲染 ---
   return (
     <div className="app-container">
       <h1>時空探員：思維同步計畫</h1>
 
-      {/* 步驟 -1：拍照獲取身分 */}
       {currentStep === -1 && (
         <div className="camera-section">
           <p className="instruction">請對準引導框以獲取探員身分...</p>
@@ -113,14 +104,12 @@ function App() {
               className="webcam-view"
               videoConstraints={videoConstraints}
             />
-            {/* 疊加引導框 */}
             <img src={frameGuide} alt="Guide frame" className="camera-guide-overlay" />
           </div>
           <button onClick={capture} className="btn-main">啟動探員辨識</button>
         </div>
       )}
 
-      {/* 步驟 0~3：問答階段 */}
       {currentStep >= 0 && currentStep < questions.length && (
         <div className="question-section">
           <div className="progress-bar">
@@ -142,24 +131,16 @@ function App() {
         </div>
       )}
 
-      {/* 步驟 4：最終結果與融合照片 */}
       {currentStep === questions.length && (
         <div className="result-section">
           <div id="photo-area" className="photo-container">
-            {/* 底層：觀眾拍照的相片 */}
             <img src={imgSrc} alt="captured" className="user-photo" />
-
-            {/* 頂層：湯川秀樹頭像 */}
             <img 
               src={yukawaPortrait} 
               alt="Yukawa Overlay" 
               className="yukawa-face-blend" 
-              style={{ 
-                opacity: similarity / 100 
-              }} 
+              style={{ opacity: similarity / 100 }} 
             />
-
-            {/* 裝飾文字 */}
             <div className="result-overlay-text">
               IDENTITY CONFIRMED: {similarity}%
             </div>
@@ -181,4 +162,4 @@ function App() {
   );
 }
 
-export default App;pp;
+export default App;
