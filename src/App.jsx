@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Webcam from 'react-webcam';
 import html2canvas from 'html2canvas';
 import './App.css';
@@ -8,7 +8,6 @@ import yukawaPortrait from './assets/yukawa-portrait.png';
 import frameGuide from './assets/frame.png'; 
 
 const questions = [
-  // ... 題庫內容保持不變 ...
   {
     id: 1,
     title: "展品一：面對混沌不明的難題",
@@ -51,8 +50,18 @@ const questions = [
 function App() {
   const webcamRef = useRef(null);
   const [imgSrc, setImgSrc] = useState(null);
-  const [currentStep, setCurrentStep] = useState(-1);
+  const [currentStep, setCurrentStep] = useState(-1); // -1: 拍照, 0-3: 題目, 4: 掃描中, 5: 結果
   const [totalScore, setTotalScore] = useState(0);
+
+  // 模擬掃描過渡效果
+  useEffect(() => {
+    if (currentStep === 4) {
+      const timer = setTimeout(() => {
+        setCurrentStep(5);
+      }, 3000); // 掃描動畫持續 3 秒
+      return () => clearTimeout(timer);
+    }
+  }, [currentStep]);
 
   const videoConstraints = {
     width: 1280,
@@ -88,14 +97,16 @@ function App() {
   };
 
   const similarity = ((totalScore / questions.length) * 100).toFixed(0);
+  const isSuccess = similarity >= 75; // 設定 75% 為成功門檻
 
   return (
     <div className="app-container">
       <h1>時空探員：思維同步計畫</h1>
 
+      {/* --- 步驟 -1：拍照獲取身分 --- */}
       {currentStep === -1 && (
         <div className="camera-section">
-          <p className="instruction">請對準引導框以獲取探員身分...</p>
+          <p className="instruction">【探員登錄】請對準引導框以獲取初始波長...</p>
           <div className="webcam-container">
             <Webcam
               audio={false}
@@ -105,15 +116,17 @@ function App() {
               videoConstraints={videoConstraints}
             />
             <img src={frameGuide} alt="Guide frame" className="camera-guide-overlay" />
+            <div className="scanner-line"></div>
           </div>
-          <button onClick={capture} className="btn-main">啟動探員辨識</button>
+          <button onClick={capture} className="btn-main">啟動掃描辨識</button>
         </div>
       )}
 
+      {/* --- 步驟 0~3：問答階段 --- */}
       {currentStep >= 0 && currentStep < questions.length && (
         <div className="question-section">
           <div className="progress-bar">
-            探員同步進度：{currentStep + 1} / {questions.length}
+            探員思維同步中：{currentStep + 1} / {questions.length}
           </div>
           <h2 className="q-title">{questions[currentStep].title}</h2>
           <p className="q-desc">{questions[currentStep].description}</p>
@@ -131,30 +144,60 @@ function App() {
         </div>
       )}
 
-      {currentStep === questions.length && (
+      {/* --- 步驟 4：模擬掃描過渡 --- */}
+      {currentStep === 4 && (
+        <div className="scanning-stage">
+          <div className="photo-container">
+            <img src={imgSrc} alt="scanning" className="user-photo grayscale" />
+            <div className="scanner-line"></div>
+            <div className="warning-text status-blink">ANALYZING QUANTUM STATE...</div>
+          </div>
+          <h2 className="scanning-hint">正在比對靈魂頻率，請稍候...</h2>
+        </div>
+      )}
+
+      {/* --- 步驟 5：最終結果與融合照片 --- */}
+      {currentStep === 5 && (
         <div className="result-section">
           <div id="photo-area" className="photo-container">
+            {/* 底層：觀眾拍照 */}
             <img src={imgSrc} alt="captured" className="user-photo" />
+
+            {/* 頂層：湯川秀樹特徵融合 */}
             <img 
               src={yukawaPortrait} 
               alt="Yukawa Overlay" 
               className="yukawa-face-blend" 
               style={{ opacity: similarity / 100 }} 
             />
+
+            {/* 數位 UI 裝飾 */}
+            <div className="scanner-line static-scan"></div>
+            <div className={`warning-text ${isSuccess ? 'status-ok' : 'status-fail'}`}>
+              {isSuccess ? "● BIOMETRIC MATCH: SUCCESS" : "○ ACCESS DENIED"}
+            </div>
+
+            {/* 成功戳章 */}
+            {isSuccess && <div className="stamp">TOP SECRET</div>}
+            
             <div className="result-overlay-text">
-              IDENTITY CONFIRMED: {similarity}%
+              SYNC: {similarity}%
             </div>
           </div>
           
           <div className="result-info">
-            <h3>身分確認成功</h3>
-            <p>你與湯川秀樹的思想同步率達到了 **{similarity}%**。</p>
-            <p className="final-msg">「先於實驗的先驗洞察力」正在你的意識中覺醒。</p>
+            <h3>{isSuccess ? "時空躍遷授權成功" : "身分判定失敗"}</h3>
+            <p>同步率：**{similarity}%**</p>
+            <p className="final-msg">
+              {isSuccess 
+                ? "系統已鎖定 2026 年座標。準備傳送，祝你好運，探員。" 
+                : "靈魂波長不穩定，無法啟動時光機。你將被留在 1954 年..."}
+            </p>
           </div>
 
           <div className="button-group">
-            <button onClick={() => {setCurrentStep(-1); setTotalScore(0);}} className="btn-retry">重新掃描</button>
-            <button onClick={downloadImage} className="btn-save">儲存探員識別證</button>
+            <button onClick={() => {setCurrentStep(-1); setTotalScore(0);}} className="btn-retry">重新同步</button>
+            <button onClick={downloadImage} className="btn-save">儲存探員證</button>
           </div>
         </div>
       )}
