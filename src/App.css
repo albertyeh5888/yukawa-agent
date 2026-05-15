@@ -29,9 +29,13 @@
 }
 
 .user-photo {
-  filter: grayscale(100%) contrast(1.1); /* 強制黑白風格 */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  /* 調整處：亮度設為 0.7 或 0.8 (1.0 是原圖) */
+  filter: grayscale(100%) brightness(0.8) contrast(1.2); 
 }
-
 /* --- 動態掃描線 --- */
 .scanner-line {
   position: absolute;
