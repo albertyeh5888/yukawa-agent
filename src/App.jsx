@@ -2,12 +2,6 @@ import React, { useState, useRef } from 'react';
 import Webcam from 'react-webcam';
 import html2canvas from 'html2canvas';
 import './App.css';
-<<<<<<< HEAD
-=======
-
-
-import yukawaPortrait from './assets/yukawa-portrait.png';
->>>>>>> 5c3861782be4beeff1f4e3eaade361d67f2fd178
 
 // 匯入素材
 import yukawaPortrait from './assets/yukawa-portrait.png';
@@ -187,4 +181,4 @@ function App() {
   );
 }
 
-export default App;
+export default App;pp;
