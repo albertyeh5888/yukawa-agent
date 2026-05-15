@@ -1,3 +1,4 @@
+/* --- 基礎容器 --- */
 .app-container {
   text-align: center;
   background-color: #1a1a1a;
@@ -7,73 +8,73 @@
   font-family: 'Courier New', Courier, monospace;
 }
 
-.webcam-view {
-  border: 5px solid #00ffcc;
-  border-radius: 10px;
-  max-width: 90%;
-}
-
-.photo-container {
-  position: relative;
+/* --- 拍照階段：Webcam 與 引導框 (frame.png) --- */
+.webcam-container {
+  position: relative; 
   display: inline-block;
+  width: 100%;
+  max-width: 500px; /* 限制寬度，適合手機與電腦瀏覽 */
+  margin: 0 auto;
+  aspect-ratio: 3 / 4; /* 強制鎖定 3:4 比例 */
   overflow: hidden;
-  border: 3px solid #fff;
+  border: 5px solid #00ffcc;
+  border-radius: 15px;
+  background-color: #000;
 }
 
-.user-photo {
+.webcam-view {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 填滿容器並裁切多餘比例 */
   display: block;
-  filter: grayscale(100%) sepia(30%); /* 營造昭和舊照片感 */
 }
 
-/* 這裡可以放湯川秀樹的特徵疊加層 */
-/*.yukawa-overlay {
+.camera-guide-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 255, 204, 0.1);
-  mix-blend-mode: overlay;
-  pointer-events: none;
+  object-fit: fill; /* 強制 frame.png 撐滿 3:4 空間以對齊五官 */
+  pointer-events: none; /* 讓點擊穿透 */
+  opacity: 0.4; 
+  z-index: 10;
 }
-*/
-/* 儲存照片的容器 */
+
+/* --- 結果階段：照片融合容器 --- */
 .photo-container {
-  position: relative; /* 關鍵：讓內部的圖片可以絕對定位 */
+  position: relative;
   display: inline-block;
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 3 / 4; /* 與拍照時一致的比例 */
   overflow: hidden;
   border: 4px solid #fff;
   box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
-  background-color: #000; /* 防止透明背景穿透 */
+  background-color: #000;
 }
 
-/* 觀眾照片 (底層) */
 .user-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 確保擷取的相片填滿 3:4 */
   display: block;
-  max-width: 100%;
-  height: auto;
-  /* 營造古老、理性的基調 */
   filter: grayscale(100%) sepia(20%) contrast(1.1); 
 }
 
-/* 湯川秀樹頭像 (疊加層) */
 .yukawa-face-blend {
-  position: absolute; /* 關鍵：疊在底層圖片上 */
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* 確保湯川的臉不會變形，會填滿視窗 */
-  
-  /* 關鍵：混合模式。讓兩張臉融合在一起，而不是單純覆蓋 */
-  /* 你可以嘗試 'screen', 'overlay', 或 'multiply' 看看哪種效果最適合你的圖片 */
+  object-fit: cover; /* 確保 3:4 的 yukawa-portrait.png 完美疊合 */
   mix-blend-mode: screen; 
-
-  transition: opacity 0.5s ease-in-out; /* 增加一點淡入的動畫感 */
-  pointer-events: none; /* 讓滑鼠可以穿透，不影響按鈕操作 */
+  transition: opacity 0.5s ease-in-out;
+  pointer-events: none;
 }
 
-/* 結果頁面的裝飾文字 */
+/* --- 介面裝飾與文字 --- */
 .result-overlay-text {
   position: absolute;
   bottom: 10px;
@@ -85,56 +86,54 @@
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   background: rgba(0, 0, 0, 0.5);
   padding: 2px 8px;
+  z-index: 20;
 }
-.btn-capture, .btn-save, .btn-retry {
+
+.progress-bar {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 15px;
+}
+
+/* --- 按鈕樣式 --- */
+.btn-main, .btn-save, .btn-retry {
   margin-top: 20px;
-  padding: 10px 20px;
+  padding: 12px 24px;
   background: transparent;
   color: #00ffcc;
   border: 2px solid #00ffcc;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  font-family: inherit;
+  transition: 0.3s;
 }
 
-.btn-capture:hover {
+.btn-main:hover, .btn-save:hover, .btn-retry:hover {
   background: #00ffcc;
   color: #1a1a1a;
+  box-shadow: 0 0 10px #00ffcc;
 }
-/* 讓按鈕整齊排列 */
+
 .options-grid {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin-top: 30px;
+  margin: 30px auto;
+  max-width: 600px;
 }
 
 .btn-option {
-  padding: 15px;
+  padding: 18px;
   background: rgba(0, 255, 204, 0.1);
   border: 1px solid #00ffcc;
   color: white;
   text-align: left;
   cursor: pointer;
   transition: 0.3s;
+  font-size: 1rem;
 }
 
 .btn-option:hover {
-  background: #00ffcc;
-  color: #1a1a1a;
-}
-
-.progress-bar {
-  font-size: 0.8rem;
-  color: #888;
-  margin-bottom: 10px;
-}
-
-.result-overlay-text {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  font-size: 2rem;
-  font-weight: bold;
-  color: #00ffcc;
-  text-shadow: 2px 2px 4px #000;
+  background: rgba(0, 255, 204, 0.3);
+  transform: translateX(5px);
 }
