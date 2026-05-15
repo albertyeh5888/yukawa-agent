@@ -114,7 +114,7 @@ function App() {
               videoConstraints={videoConstraints}
             />
             {/* 疊加引導框 */}
-            <img src={frameGuide} alt="Guide Frame" className="camera-guide-overlay" />
+            <img src={frameGuide} alt="Guide frame" className="camera-guide-overlay" />
           </div>
           <button onClick={capture} className="btn-main">啟動探員辨識</button>
         </div>
