@@ -114,6 +114,7 @@ function App() {
               screenshotFormat="image/jpeg"
               className="webcam-view"
               videoConstraints={videoConstraints}
+              mirrored={true} /* 加上這一行，讓即時預覽直接鏡像 */
             />
             <img src={frameGuide} alt="Guide frame" className="camera-guide-overlay" />
             <div className="scanner-line"></div>

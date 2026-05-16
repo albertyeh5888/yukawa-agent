@@ -12,7 +12,7 @@
 .webcam-container, .photo-container {
   position: relative; 
   display: inline-block;
-  transform: scaleX(-1);
+  transform: scaleX(1);
   width: 100%;
   max-width: 450px;
   aspect-ratio: 3 / 4;
