@@ -2,10 +2,17 @@
 .app-container {
   text-align: center;
   background-color: #0a0a0a; /* 更深色的背景增加神秘感 */
-  color: #00ffcc;
+  color: #ffffff; /* 調整處：全域預設文字改為白色，防止沒設定到的字體變黑隱形 */
   min-height: 100vh;
   padding: 20px;
   font-family: 'Courier New', Courier, monospace;
+}
+
+/* 新增處：主標題（時空探員：思維同步計畫）樣式 */
+h1 {
+  color: #00ffcc; /* 亮青大標題 */
+  margin-bottom: 30px;
+  text-shadow: 0 0 10px rgba(0, 255, 204, 0.5); /* 幫標題加上量子微光 */
 }
 
 /* --- 拍照與顯示容器 --- */
@@ -37,6 +44,7 @@
   /* 調整處：亮度設為 0.7 或 0.8 (1.0 是原圖) */
   filter: grayscale(100%) brightness(0.8) contrast(1.2); 
 }
+
 /* --- 動態掃描線 --- */
 .scanner-line {
   position: absolute;
@@ -57,7 +65,7 @@
 }
 
 .static-scan {
-  opacity: 0.9q;
+  opacity: 0.9; /* 調整處：修正原本打錯的 0.9q 為 0.9 */
   animation-duration: 8s; /* 結果頁面掃描慢一點，比較不干擾 */
 }
 
@@ -123,6 +131,20 @@
 }
 
 /* --- 其他介面 --- */
+/* 新增處：展品小標題樣式，解決原先發黑看不到的問題 */
+.q-title {
+  color: rgba(255, 255, 148, 0.848); /* 科幻亮青色 */
+  font-size: 1.6rem;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.q-desc {
+  white-space: pre-line; /* 關鍵：讓瀏覽器看懂 \n 並執行換行 */
+  color: #00ffcc; /* 維持原本明亮的翠綠/青色風格 */
+  line-height: 1.6;
+}
+
 .result-overlay-text {
   position: absolute;
   bottom: 15px;
