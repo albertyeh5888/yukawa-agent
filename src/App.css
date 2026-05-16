@@ -12,6 +12,7 @@
 .webcam-container, .photo-container {
   position: relative; 
   display: inline-block;
+  transform: scaleX(-1);
   width: 100%;
   max-width: 450px;
   aspect-ratio: 3 / 4;
@@ -56,7 +57,7 @@
 }
 
 .static-scan {
-  opacity: 0.9;
+  opacity: 0.9q;
   animation-duration: 8s; /* 結果頁面掃描慢一點，比較不干擾 */
 }
 
